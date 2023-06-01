@@ -11,21 +11,29 @@ public class TubesSpawner : MonoBehaviour
     [SerializeField] private float highestPosition = 3.3f;
     [SerializeField] private float lowestPosition = -2.6f;
 
+    private bool isSpawnEnabled = true;
+     
     void Start()
     {
         StartCoroutine(SpawnTubes());
+
     }
 
     private IEnumerator SpawnTubes()
     {
-        while (true)
+        while (isSpawnEnabled)
         {
             yield return new WaitForSeconds(spawnInterval);
 
             float randomY = Random.Range(lowestPosition, highestPosition);
             Vector3 position = new Vector3(transform.position.x, randomY, transform.position.z);
 
-            Instantiate(tubesPrefab, position, Quaternion.identity);
+            if (isSpawnEnabled) Instantiate(tubesPrefab, position, Quaternion.identity);
         }
+    }
+
+    public void StopSpawn()
+    {
+        isSpawnEnabled = false;
     }
 }
